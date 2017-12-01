@@ -1,6 +1,6 @@
 # tarea2sd
 # Por el momento la forma de ejecucion en la consola es (se debe estar en la carpeta donde estan los arhivos:
-1)dir_archivos/xx/:-$ rmiregistry 54321 
+1)dir_archivos/xx/:-$ rmiregistry 54321 \n
 2)dir_archivos/xx/:-$ javac *.java (en una nueva terminal en la misma direccion) 
 3)dir_archivos/xx/:-$ java -Djava.security.policy=ALL.permisos ServidorProceso 54321(en una nueva terminal) 
 4)dir_archivos/xx/:-$ java -Djava.security.policy=ALL.permisos ClienteProceso localhost 54321 adasd(en una nueva terminal) 
