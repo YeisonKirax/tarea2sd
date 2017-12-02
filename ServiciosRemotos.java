@@ -1,7 +1,7 @@
 import java.rmi.*;
 
 interface ServiciosRemotos extends Remote {
-  String eco(String s) throws RemoteException;
+  String eco(String s, String i) throws RemoteException;
   //void request(int id, int seq) throws RemoteException;
   //void waitToken() throws RemoteException;
   //void takeToken(Token token) throws RemoteException;
