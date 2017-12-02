@@ -6,7 +6,7 @@ class ServidorProceso  {
     static public void main (String args[]) {
         ArrayList<ServiciosRemotosImpl> skel= new ArrayList();
         if (args.length<2) {
-            System.err.println("Uso: ServidorEco numPuertoRegistro numProcesos");
+            System.err.println("Uso: ServidorEco numPuertoRegistro id numProcesos");
             return;
         }
         if (System.getSecurityManager() == null) {
@@ -14,9 +14,14 @@ class ServidorProceso  {
         }
         try {
             for (int i = 1;i <= Integer.parseInt(args[1]); i++) {
-                ServiciosRemotosImpl srv = new ServiciosRemotosImpl();
-                skel.add(srv);
-                Naming.rebind("rmi://localhost:" + args[0] + "/"+ String.valueOf(i) + "/Eco", srv);
+                if (i == Integer.parseInt(args[1])) {
+                    ServiciosRemotosImpl srv = new ServiciosRemotosImpl();
+                    skel.add(srv);
+                    Naming.rebind("rmi://localhost:" + args[0] + "/" + String.valueOf(i) + "/Eco", srv);
+
+                } else {
+                    continue;
+                }
             }
         }
         catch (RemoteException e) {
