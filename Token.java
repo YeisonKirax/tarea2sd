@@ -1,6 +1,6 @@
 import java.util.*;
 
-class Token {
+class Token implements Serializable{
 
     Queue<int> Q; //cOLA DE PROCESOS SOLICITANTES
     ArrayList<int> LN; //aRREGLO QUE CONTIENE ns DE LA ULTIMA SOLICITUD POR PROCESO.
