@@ -1,7 +1,7 @@
 Integrantes: Jordan Esquivel
              Yeison Fernandez
 
-##Ejecucion
+##Ejecucion##
 Para ejecutar el programa, es necesario que todos los archivos esten en una
 carpeta, luego desde la carpeta en la terminal n° 1 ejecutar:
 1. **make**
@@ -23,7 +23,7 @@ Donde valor_n con n :{1,2,3,4} corresponde a los datos solicitados en el
 enunciado de la tarea.
 
 
-##Consideraciones
+##Consideraciones##
 1. Se espera que los inputs entregados sean los ideales, por ejemplo:
 id es un entero, n es un entero, initialDelay es un entero(que representa
   los milisegundos) y bearer es un booleano (true, false).
@@ -38,7 +38,7 @@ ira trasladando entre procesos.
   run-process), para matar al server debe ir a la terminal n°1 y hacer un ctrl+c.
 6. No se realizó el bonus.
 
-## Clases definidas
+## Clases definidas##
 1. **Token**: corresponde a una clase Token, la cual es serializable. Contiene
 metodos utiles para manipular el Token.
 2. **ClienteProceso**: corresponde a la clase main correspondiente a los Clientes
