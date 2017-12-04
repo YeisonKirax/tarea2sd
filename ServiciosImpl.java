@@ -35,11 +35,9 @@ class ServiciosImpl extends UnicastRemoteObject implements Servicios {
 
                     if (proceso.obtenerValorRN(indice) == proceso.getToken().obtenervalorln(indice) + 1) {
                         //Pasarle el token
-                        System.out.println("PASAR TOKEN A PROCESO " + id);
                         return 200;
                     } else {
                         //Wait
-                        System.out.println("HACER ESPERAR A PROCESO " + id);
                         return 300;
 
                     }
@@ -49,8 +47,8 @@ class ServiciosImpl extends UnicastRemoteObject implements Servicios {
         }
         return 0;
     }
-    public void waitToken() throws RemoteException{
-        System.out.println("Wait");
+    public Boolean waitToken() throws RemoteException{
+        return true;
 
     }
     public Token takeToken(Token token) throws RemoteException{
@@ -61,6 +59,7 @@ class ServiciosImpl extends UnicastRemoteObject implements Servicios {
                 if (proceso.getToken() != null) {
                     Token temp = proceso.getToken();
                     proceso.modificarToken(token);
+                    proceso.cambiarEstado(1);
                     return temp;
                 }
             }
@@ -70,14 +69,15 @@ class ServiciosImpl extends UnicastRemoteObject implements Servicios {
                 if (proceso.getId() == VengoDeLaCola) {
                         Token temp = proceso.getToken();
                         proceso.modificarToken(token);
+                        proceso.cambiarEstado(2);
                         return null;
                 }
             }
         }
         return token;
+
     }
     public void kill() throws RemoteException{
-        System.out.println("KILL");
         for (Proceso proceso : procesos) {
             proceso.cambiarEstado(5);
         }

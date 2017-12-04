@@ -1,6 +1,8 @@
 import java.util.*;
 import java.rmi.*;
 import java.rmi.server.*;
+import java.util.Timer;
+import java.util.TimerTask;
 
 class ClienteProceso {
   static int id;
@@ -10,7 +12,7 @@ class ClienteProceso {
   static Token token;
   static Proceso proc;
     static public void main (String args[]) {
-    
+
        if (System.getSecurityManager() == null)
             System.setSecurityManager(new SecurityManager());
 
@@ -23,6 +25,7 @@ class ClienteProceso {
             if (bearer) {
                 token = new Token(n);
                 proc = srv.crearProceso(id, n, initialDelay, bearer, token);
+                proc.cambiarEstado(2);
                 System.out.println("Se ha creado el procesos " + args[0] + " exitosamente");
             } else {
                 proc = srv.crearProceso(id, n, initialDelay, bearer, null);
@@ -34,23 +37,34 @@ class ClienteProceso {
 
             System.out.println("TOKEN ANTES --"+ proc.getToken());
 
+            Thread.sleep(initialDelay);
+
+            if(proc.getToken() == null){
+              proc.cambiarEstado(1);
+              proc.setBearer(false);
+            }
             //Si no tengo el token
             if (!proc.getBearer()) {
                 srv.cambiarVengodeCola(-100);
-
+                while(true){
                 //Aumentar numero de sequencia antes del request
-                proc.actualizarNsequencia();
+                    proc.actualizarNsequencia();
 
                 //RN[I] = SN
-                proc.modificarValorRN(id, proc.getSN());
+                    proc.modificarValorRN(id, proc.getSN());
 
                 //Enviar Request al servidor y este lo trabaja por procesos
-                int response = srv.request(proc.getId(), proc.getSN());
-                if (response == 200) {
-                    proc.modificarToken(srv.takeToken(proc.getToken()));
-                    proc.cambiarEstado(2);
-                } else if (response == 300) {
-                    srv.wait();
+
+                    int response = srv.request(proc.getId(), proc.getSN());
+                    if (response == 200) {
+                      proc.modificarToken(srv.takeToken(proc.getToken()));
+                      proc.cambiarEstado(2);
+                      break;
+                    } else if (response == 300) {
+                      if(srv.waitToken()){
+                        Thread.sleep(initialDelay);
+                      };
+                    }
                 }
 
                 //Cambiar a estado Rojo
@@ -90,6 +104,7 @@ class ClienteProceso {
                     srv.cambiarVengodeCola(procesoApedirToken);
                     srv.takeToken(proc.getToken());
                     srv.cambiarVengodeCola(-100);
+                    proc.cambiarEstado(1);
 
                 }
 
@@ -133,6 +148,7 @@ class ClienteProceso {
                     srv.cambiarVengodeCola(procesoApedirToken);
                     srv.takeToken(proc.getToken());
                     srv.cambiarVengodeCola(-100);
+                    proc.cambiarEstado(1);
 
                 }
             }
@@ -154,7 +170,6 @@ class ClienteProceso {
 
 
         }
-            //Sacar elemento de la cola y enviarlo a el, cambiar estado
         catch (RemoteException e) {
             System.err.println("Error de comunicacion: " + e.toString());
         }

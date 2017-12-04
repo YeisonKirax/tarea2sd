@@ -18,7 +18,7 @@ default: classes
 classes: $(CLASSES:.java=.class)
 
 run-rmiregistry:
-		rmiregistry 54321&
+		rmiregistry 54321
 
 run-server:
 	java -Djava.security.policy=ALL.permisos Servidor

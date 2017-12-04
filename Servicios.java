@@ -7,7 +7,7 @@ interface Servicios extends Remote {
   public void cambiarVengodeCola(int i) throws RemoteException;
   public List<Proceso> obtenerProcesos() throws RemoteException;
   public int request(int id, int seq) throws RemoteException;
-  public void waitToken() throws RemoteException;
+  public Boolean waitToken() throws RemoteException;
   public Token takeToken(Token token) throws RemoteException;
   public void kill() throws RemoteException;
 

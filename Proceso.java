@@ -14,7 +14,7 @@ interface Proceso extends Remote {
     public void modificarValorRN(int id, int nuevoValor) throws RemoteException;
     public int obtenerValorRN(int indice) throws RemoteException;
     public void removerValorRN(int indice) throws RemoteException;
-
+    public void setBearer(Boolean val) throws RemoteException;
     //Extra
     public void actualizarNsequencia() throws RemoteException;
     public void asignarIndicadorProceso(int valor) throws RemoteException;

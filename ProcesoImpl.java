@@ -43,6 +43,9 @@ class ProcesoImpl extends UnicastRemoteObject implements Proceso {
     {
         RN.remove(indice-1);
     }
+    public void setBearer(Boolean val){
+        this.bearer = val;
+    }
 
     //Extra
     public void actualizarNsequencia()
