@@ -21,7 +21,7 @@ run-rmiregistry:
 		rmiregistry 54321&
 
 run-server:
-	java -Djava.security.policy=ALL.permisos Servidor&
+	java -Djava.security.policy=ALL.permisos Servidor
 
 run-process:
 	java -Djava.security.policy=ALL.permisos ClienteProceso $(id) $(n) $(initialDelay) $(bearer)

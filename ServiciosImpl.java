@@ -4,12 +4,17 @@ import java.rmi.server.*;
 
 class ServiciosImpl extends UnicastRemoteObject implements Servicios {
     List<Proceso> procesos;
+    int VengoDeLaCola; //-100 si no vengo, un id si vengo
+
     ServiciosImpl() throws RemoteException {
         procesos = new LinkedList<Proceso>();
     }
     public Proceso crearProceso(int id, int n, int initialDelay, Boolean bearer, Token token) throws RemoteException{
       Proceso pro = new ProcesoImpl(id, n, initialDelay, bearer, token);
       return pro;
+    }
+    public void cambiarVengodeCola(int i) throws RemoteException {
+        VengoDeLaCola = i;
     }
     public void agregarProceso(Proceso proc) throws RemoteException {
         procesos.add(proc);
@@ -50,18 +55,26 @@ class ServiciosImpl extends UnicastRemoteObject implements Servicios {
     }
     public Token takeToken(Token token) throws RemoteException{
         System.out.println("Take Token");
-        for (Proceso proceso : procesos) {
-            if(proceso.getToken() != null)
-            {
-                  Token temp = proceso.getToken();
-                  proceso.modificarToken(token);
-                  return temp;
+        if(VengoDeLaCola ==-100){
+            //El token de entrada es null, pasarle el token
+            for (Proceso proceso : procesos) {
+                if (proceso.getToken() != null) {
+                    Token temp = proceso.getToken();
+                    proceso.modificarToken(token);
+                    return temp;
+                }
             }
-
-
+        } else {
+            //El token de entrada no es null, quitarle el token
+            for (Proceso proceso : procesos) {
+                if (proceso.getId() == VengoDeLaCola) {
+                        Token temp = proceso.getToken();
+                        proceso.modificarToken(token);
+                        return null;
+                }
+            }
         }
         return token;
-
     }
     public void kill() throws RemoteException{
         System.out.println("KILL");

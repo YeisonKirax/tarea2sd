@@ -36,6 +36,7 @@ class ClienteProceso {
 
             //Si no tengo el token
             if (!proc.getBearer()) {
+                srv.cambiarVengodeCola(-100);
 
                 //Aumentar numero de sequencia antes del request
                 proc.actualizarNsequencia();
@@ -74,10 +75,22 @@ class ClienteProceso {
                         if (indice != id && e != indice) {
                             //No esta en la cola  RN[J] = LN[J]+1
                             if (proc.obtenerValorRN(indice) == (proc.getToken().obtenervalorln(indice)) + 1) {
-                                System.out.println("No esta en la cola");
+                                System.out.println("No esta en la cola " + indice);
+                                tokenModificado = proc.getToken();
+                                tokenModificado.agregarvalor(indice);
+                                proc.modificarToken(tokenModificado);
                             }
                         }
                     }
+                }
+
+                if(proc.getToken().getQ().peek() != null){
+                    System.out.println("Cola no vacia, sacar de cola e enviar token");
+                    int procesoApedirToken = proc.getToken().getQ().remove();
+                    srv.cambiarVengodeCola(procesoApedirToken);
+                    srv.takeToken(proc.getToken());
+                    srv.cambiarVengodeCola(-100);
+
                 }
 
             } else {
@@ -87,26 +100,40 @@ class ClienteProceso {
 
                 /////////////////////////Salida de la seccion Critica
                 //Modificar la lista del token LN[I] = RN[I]
+
                 Token tokenModificado = proc.getToken();
                 System.out.println(tokenModificado);
                 tokenModificado.modificarvalorln(id, proc.obtenerValorRN(id));
                 tokenModificado.AumentarContador();
                 proc.modificarToken(tokenModificado);
-
+                tokenModificado = null;
                 proc.cambiarEstado(2);
 
 
                 //Por cada id que no esta en la cola Q del token si es que RN[J] = LN[J]+1
                 for (Proceso proceso : l) {
                     int indice = proceso.getId();
-                    for (int e : proc.getToken().getQ()) {
+                    Queue<Integer> Qtmp = proc.getToken().getQ();
+                    for (int e : Qtmp ) {
                         if (indice != id && e != indice) {
                             //No esta en la cola  RN[J] = LN[J]+1
                             if (proc.obtenerValorRN(indice) == (proc.getToken().obtenervalorln(indice)) + 1) {
-                                System.out.println("No esta en la cola");
+                                System.out.println("No esta en la cola " + indice);
+                                tokenModificado = proc.getToken();
+                                tokenModificado.agregarvalor(indice);
+                                proc.modificarToken(tokenModificado);
                             }
                         }
                     }
+                }
+
+                if(proc.getToken().getQ().peek() != null){
+                    System.out.println("Cola no vacia, sacar de cola e enviar token");
+                    int procesoApedirToken = proc.getToken().getQ().remove();
+                    srv.cambiarVengodeCola(procesoApedirToken);
+                    srv.takeToken(proc.getToken());
+                    srv.cambiarVengodeCola(-100);
+
                 }
             }
 
