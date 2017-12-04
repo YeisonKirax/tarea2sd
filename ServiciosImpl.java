@@ -3,6 +3,10 @@ import java.rmi.*;
 import java.rmi.server.*;
 
 class ServiciosImpl extends UnicastRemoteObject implements Servicios {
+    public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_GREEN = "\u001B[32m";
+    public static final String ANSI_YELLOW = "\u001B[33m";
     List<Proceso> procesos;
     int VengoDeLaCola; //-100 si no vengo, un id si vengo
 
@@ -15,6 +19,25 @@ class ServiciosImpl extends UnicastRemoteObject implements Servicios {
     }
     public void cambiarVengodeCola(int i) throws RemoteException {
         VengoDeLaCola = i;
+    }
+    public void PrintColors(Proceso proc) throws RemoteException{
+        int Estado = proc.getEstado();
+        if(Estado == 1)
+        {
+            System.out.println(ANSI_GREEN + "Proceso "+proc.getId()+" de color Verde sin Token" + ANSI_RESET);
+        } else if(Estado == 2)
+        {
+            System.out.println(ANSI_GREEN + "Proceso "+proc.getId()+" de color Verde con Token" + ANSI_RESET);
+        } else if(Estado == 3)
+        {
+            System.out.println(ANSI_YELLOW + "Proceso "+proc.getId()+" de color Amarillo esperando Token" + ANSI_RESET);
+        } else if(Estado == 4)
+        {
+            System.out.println(ANSI_RED + "Proceso "+proc.getId()+" de color Rojo en zona critica con Token" + ANSI_RESET);
+        } else if (Estado == 5) {
+            System.out.println("Proceso "+proc.getId()+" Muerto");
+        }
+
     }
     public void agregarProceso(Proceso proc) throws RemoteException {
         procesos.add(proc);
@@ -52,7 +75,6 @@ class ServiciosImpl extends UnicastRemoteObject implements Servicios {
 
     }
     public Token takeToken(Token token) throws RemoteException{
-        System.out.println("Take Token");
         if(VengoDeLaCola ==-100){
             //El token de entrada es null, pasarle el token
             for (Proceso proceso : procesos) {

@@ -5,6 +5,7 @@ interface Servicios extends Remote {
   public Proceso crearProceso(int id, int n, int initialDelay, Boolean bearer, Token token) throws RemoteException;
   public void agregarProceso(Proceso proc) throws RemoteException;
   public void cambiarVengodeCola(int i) throws RemoteException;
+  public void PrintColors(Proceso proc) throws RemoteException;
   public List<Proceso> obtenerProcesos() throws RemoteException;
   public int request(int id, int seq) throws RemoteException;
   public Boolean waitToken() throws RemoteException;

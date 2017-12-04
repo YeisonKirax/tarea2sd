@@ -26,6 +26,7 @@ class ClienteProceso {
                 token = new Token(n);
                 proc = srv.crearProceso(id, n, initialDelay, bearer, token);
                 proc.cambiarEstado(2);
+                srv.PrintColors(proc);
                 System.out.println("Se ha creado el procesos " + args[0] + " exitosamente");
             } else {
                 proc = srv.crearProceso(id, n, initialDelay, bearer, null);
@@ -41,6 +42,7 @@ class ClienteProceso {
 
             if(proc.getToken() == null){
               proc.cambiarEstado(1);
+              srv.PrintColors(proc);
               proc.setBearer(false);
             }
             //Si no tengo el token
@@ -59,10 +61,13 @@ class ClienteProceso {
                     if (response == 200) {
                       proc.modificarToken(srv.takeToken(proc.getToken()));
                       proc.cambiarEstado(2);
-                      break;
+                      srv.PrintColors(proc);
+                        break;
                     } else if (response == 300) {
                       if(srv.waitToken()){
-                        Thread.sleep(initialDelay);
+                          proc.cambiarEstado(3);
+                          srv.PrintColors(proc);
+                          Thread.sleep(initialDelay);
                       };
                     }
                 }
@@ -70,6 +75,8 @@ class ClienteProceso {
                 //Cambiar a estado Rojo
                 System.out.println("Cambiar a Rojo");
                 proc.cambiarEstado(4);
+                srv.PrintColors(proc);
+
 
                 /////////////////////////Salida de la seccion Critica
                 //Modificar la lista del token LN[I] = RN[I]
@@ -80,6 +87,8 @@ class ClienteProceso {
                 proc.modificarToken(tokenModificado);
 
                 proc.cambiarEstado(2);
+                srv.PrintColors(proc);
+
 
 
                 //Por cada id que no esta en la cola Q del token si es que RN[J] = LN[J]+1
@@ -105,6 +114,8 @@ class ClienteProceso {
                     srv.takeToken(proc.getToken());
                     srv.cambiarVengodeCola(-100);
                     proc.cambiarEstado(1);
+                    srv.PrintColors(proc);
+
 
                 }
 
@@ -112,6 +123,8 @@ class ClienteProceso {
                 //Cambiar a estado Rojo
                 System.out.println("Cambiar a Rojo");
                 proc.cambiarEstado(4);
+                srv.PrintColors(proc);
+
 
                 /////////////////////////Salida de la seccion Critica
                 //Modificar la lista del token LN[I] = RN[I]
@@ -123,6 +136,8 @@ class ClienteProceso {
                 proc.modificarToken(tokenModificado);
                 tokenModificado = null;
                 proc.cambiarEstado(2);
+                srv.PrintColors(proc);
+
 
 
                 //Por cada id que no esta en la cola Q del token si es que RN[J] = LN[J]+1
@@ -149,6 +164,8 @@ class ClienteProceso {
                     srv.takeToken(proc.getToken());
                     srv.cambiarVengodeCola(-100);
                     proc.cambiarEstado(1);
+                    srv.PrintColors(proc);
+
 
                 }
             }
