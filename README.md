@@ -1,7 +1,8 @@
 Integrantes: Jordan Esquivel
              Yeison Fernandez
 
-##Ejecucion
+
+## Ejecucion
 
 Para ejecutar el programa, es necesario que todos los archivos esten en una
 carpeta, luego desde la carpeta en la terminal n° 1 ejecutar:
@@ -28,7 +29,7 @@ Donde valor_n con n :{1,2,3,4} corresponde a los datos solicitados en el
 enunciado de la tarea.
 
 
-##Consideracione
+## Consideraciones
 
 1. Se espera que los inputs entregados sean los ideales, por ejemplo:
 id es un entero, n es un entero, initialDelay es un entero(que representa
