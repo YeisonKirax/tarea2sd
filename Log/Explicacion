@@ -1,0 +1,20 @@
+Explicacion
+
+Antes
+Se hace el make, se corre el server(esquina superior izquierda),
+luego cada proceso se llama con:
+
+  make run-process id n initialdelay bearer
+
+Despues
+En el server, tenemos que se escribe nuestro log como out de colores
+respectivos al estado de cada proceso. Cada vez que un proceso cambia
+de estado sale una de estas lineas. 
+Para este caso el proceso 1 posee el token pero el proceso 3 al tener menos
+delay, es el primero a intentar trabajar su zona critica entonces recibe
+el token de 1. Luego trabaja su zona critica y al salir el 2 intento
+pedirlo pero por las condiciones lo mando a esperar, el 1 termino su
+delay y tambien intenta pero lo mandan a esperar, para luego el token
+ser recibido por el 2, trabajado su zona critica, mientras esto
+pasa el 1 espera a que este se libere para luego recibirlo y trabajarlo
+para luego terminar y matar a todos los procesos.

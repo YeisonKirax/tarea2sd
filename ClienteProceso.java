@@ -27,19 +27,15 @@ class ClienteProceso {
                 proc = srv.crearProceso(id, n, initialDelay, bearer, token);
                 proc.cambiarEstado(2);
                 srv.PrintColors(proc);
-                System.out.println("Se ha creado el procesos " + args[0] + " exitosamente");
             } else {
                 proc = srv.crearProceso(id, n, initialDelay, bearer, null);
-                System.out.println("Se ha creado el procesos " + args[0] + " exitosamente");
             }
             srv.agregarProceso(proc);
             List<Proceso> l = srv.obtenerProcesos();
             //Ver si paso mi delay time, entonces
 
-            System.out.println("TOKEN ANTES --"+ proc.getToken());
 
             Thread.sleep(initialDelay);
-
             if(proc.getToken() == null){
               proc.cambiarEstado(1);
               srv.PrintColors(proc);
@@ -73,7 +69,6 @@ class ClienteProceso {
                 }
 
                 //Cambiar a estado Rojo
-                System.out.println("Cambiar a Rojo");
                 proc.cambiarEstado(4);
                 srv.PrintColors(proc);
 
@@ -81,7 +76,6 @@ class ClienteProceso {
                 /////////////////////////Salida de la seccion Critica
                 //Modificar la lista del token LN[I] = RN[I]
                 Token tokenModificado = proc.getToken();
-                System.out.println(tokenModificado);
                 tokenModificado.modificarvalorln(id, proc.obtenerValorRN(id));
                 tokenModificado.AumentarContador();
                 proc.modificarToken(tokenModificado);
@@ -98,7 +92,6 @@ class ClienteProceso {
                         if (indice != id && e != indice) {
                             //No esta en la cola  RN[J] = LN[J]+1
                             if (proc.obtenerValorRN(indice) == (proc.getToken().obtenervalorln(indice)) + 1) {
-                                System.out.println("No esta en la cola " + indice);
                                 tokenModificado = proc.getToken();
                                 tokenModificado.agregarvalor(indice);
                                 proc.modificarToken(tokenModificado);
@@ -108,7 +101,6 @@ class ClienteProceso {
                 }
 
                 if(proc.getToken().getQ().peek() != null){
-                    System.out.println("Cola no vacia, sacar de cola e enviar token");
                     int procesoApedirToken = proc.getToken().getQ().remove();
                     srv.cambiarVengodeCola(procesoApedirToken);
                     srv.takeToken(proc.getToken());
@@ -121,7 +113,6 @@ class ClienteProceso {
 
             } else {
                 //Cambiar a estado Rojo
-                System.out.println("Cambiar a Rojo");
                 proc.cambiarEstado(4);
                 srv.PrintColors(proc);
 
@@ -130,7 +121,6 @@ class ClienteProceso {
                 //Modificar la lista del token LN[I] = RN[I]
 
                 Token tokenModificado = proc.getToken();
-                System.out.println(tokenModificado);
                 tokenModificado.modificarvalorln(id, proc.obtenerValorRN(id));
                 tokenModificado.AumentarContador();
                 proc.modificarToken(tokenModificado);
@@ -148,7 +138,6 @@ class ClienteProceso {
                         if (indice != id && e != indice) {
                             //No esta en la cola  RN[J] = LN[J]+1
                             if (proc.obtenerValorRN(indice) == (proc.getToken().obtenervalorln(indice)) + 1) {
-                                System.out.println("No esta en la cola " + indice);
                                 tokenModificado = proc.getToken();
                                 tokenModificado.agregarvalor(indice);
                                 proc.modificarToken(tokenModificado);
@@ -158,7 +147,6 @@ class ClienteProceso {
                 }
 
                 if(proc.getToken().getQ().peek() != null){
-                    System.out.println("Cola no vacia, sacar de cola e enviar token");
                     int procesoApedirToken = proc.getToken().getQ().remove();
                     srv.cambiarVengodeCola(procesoApedirToken);
                     srv.takeToken(proc.getToken());
@@ -175,14 +163,12 @@ class ClienteProceso {
                 srv.kill();
             }
 
-            System.out.println("ESTADO DEL PROCESO: "+proc.getEstado());
             while (true){
                 if(proc.getEstado()==5){
                     break;}
 
             }
 
-            System.out.println("TOKEN DESPUES --" +proc.getToken());
 
 
 
