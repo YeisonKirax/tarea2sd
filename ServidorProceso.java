@@ -13,11 +13,9 @@ class ServidorProceso  {
             System.setSecurityManager(new RMISecurityManager());
         }
         try {
-            for (int i = 1;i <= Integer.parseInt(args[1]); i++) {
-                ServiciosRemotosImpl srv = new ServiciosRemotosImpl();
-                skel.add(srv);
-                Naming.rebind("rmi://localhost:" + args[0] + "/"+ String.valueOf(i) + "/Eco", srv);
-            }
+            ServiciosRemotosImpl srv = new ServiciosRemotosImpl();
+            Naming.rebind("rmi://localhost:" + args[0] + "/Proceso", srv);
+
         }
         catch (RemoteException e) {
             System.err.println("Error de comunicacion: " + e.toString());
