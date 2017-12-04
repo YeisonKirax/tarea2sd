@@ -9,29 +9,33 @@ class Token implements Serializable{
     public Token(int cantProc)
     {
         this.Q = new LinkedList<>(); // Se va llenando con procesos cuya ID no este en la cola de solicitantes si RNi[j] = LN[j] +1
-        this.LN = new ArrayList<Integer>(cantProc);
+        this.LN = new ArrayList<Integer>(Collections.nCopies(cantProc, 0));
     }
 
-    public void modificarmalorln(int Indice, int NuevoValor)
+    //Arreglo LN
+    public void modificarvalorln(int Indice, int NuevoValor)
     {
         LN.set(Indice,NuevoValor);
     }
-
     public int obtenervalorln(int indice)
     {
         return LN.get(indice);
     }
-
     public void removervalorln(int indice)
     {
         LN.remove(indice);
+    }
+
+    //Cola Q
+
+    public Queue<Integer> getQ() {
+        return Q;
     }
 
     public int sacarvalor()
     {
         return Q.remove();
     }
-
     public void agregarvalor(int valor)
     {
         Q.add(valor);

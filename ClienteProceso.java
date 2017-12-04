@@ -30,10 +30,57 @@ class ClienteProceso {
             }
             srv.agregarProceso(proc);
             List<Proceso> l = srv.obtenerProcesos();
-            for(Proceso proceso: l){
-              System.out.println("Soy el proceso " + String.valueOf(proceso.getId()));
+            //Ver si paso mi delay time, entonces
+
+            //Si no tengo el token
+            if(!proc.getBearer()) {
+
+                //Aumentar numero de sequencia antes del request
+                proc.actualizarNsequencia();
+
+                //RN[I] = SN
+                proc.modificarValorRN(id, proc.getSN());
+
+                //Enviar Request al servidor y este lo trabaja por procesos
+                srv.request(proc.getId(), proc.getSN());
+
+
+            } else {
+                //Cambiar a estado Rojo
+                System.out.println("Cambiar a Rojo");
+                proc.cambiarEstado(4);
+
+                /////////////////////////Salida de la seccion Critica
+                //Modificar la lista del token LN[I] = RN[I]
+                Token tokenModificado = proc.getToken();
+                System.out.println(tokenModificado);
+                tokenModificado.modificarvalorln(id, proc.obtenerValorRN(id));
+                proc.modificarToken(tokenModificado);
+
+                proc.cambiarEstado(2);
+
+
+                //Por cada id que no esta en la cola Q del token si es que RN[J] = LN[J]+1
+                for (Proceso proceso : l) {
+                    int indice = proceso.getId();
+                    for (int e : proc.getToken().getQ()) {
+                        if(indice != id && e != indice){
+                            //No esta en la cola  RN[J] = LN[J]+1
+                            if(proc.obtenerValorRN(indice) == (proc.getToken().obtenervalorln(indice)) +1){
+                                System.out.println("No esta en la cola");
+                            }
+                        }
+                    }
+
+                }
             }
 
+
+
+
+
+
+            //Sacar elemento de la cola y enviarlo a el, cambiar estado
         }
         catch (RemoteException e) {
             System.err.println("Error de comunicacion: " + e.toString());
