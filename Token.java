@@ -5,6 +5,7 @@ class Token implements Serializable{
 
     Queue<Integer> Q; //cOLA DE PROCESOS SOLICITANTES
     ArrayList<Integer> LN; //aRREGLO QUE CONTIENE ns DE LA ULTIMA SOLICITUD POR PROCESO.
+    int Contador = 0;
 
     public Token(int cantProc)
     {
@@ -15,15 +16,15 @@ class Token implements Serializable{
     //Arreglo LN
     public void modificarvalorln(int Indice, int NuevoValor)
     {
-        LN.set(Indice,NuevoValor);
+        LN.set(Indice-1,NuevoValor);
     }
     public int obtenervalorln(int indice)
     {
-        return LN.get(indice);
+        return LN.get(indice-1);
     }
     public void removervalorln(int indice)
     {
-        LN.remove(indice);
+        LN.remove(indice-1);
     }
 
     //Cola Q
@@ -39,5 +40,13 @@ class Token implements Serializable{
     public void agregarvalor(int valor)
     {
         Q.add(valor);
+    }
+
+    //Contador
+    public int getContador(){
+        return Contador;
+    }
+    public void AumentarContador(){
+        this.Contador++;
     }
 }

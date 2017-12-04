@@ -10,7 +10,7 @@ class ProcesoImpl extends UnicastRemoteObject implements Proceso {
     private int nsecuencia;
     private ArrayList<Integer> RN;
     private Token token = null;
-    private int estado; // 1 Verde sin token, 2 Verde con token, 3 Amarillo Esperando token, 4 En zona critica
+    private int estado; // 1 Verde sin token, 2 Verde con token, 3 Amarillo Esperando token, 4 En zona critica. 5 espera a morir
 
     ProcesoImpl(int id, int n, int initialDelay, Boolean bearer, Token token) throws RemoteException {
         this.id = id;
@@ -19,6 +19,7 @@ class ProcesoImpl extends UnicastRemoteObject implements Proceso {
         this.bearer = bearer;
         this.token = token;
         this.RN = new ArrayList<Integer>(Collections.nCopies(n, 0));
+        this.estado = 1;
         }
 
 

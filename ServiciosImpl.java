@@ -17,39 +17,58 @@ class ServiciosImpl extends UnicastRemoteObject implements Servicios {
     public List<Proceso> obtenerProcesos() throws RemoteException{
         return procesos;
     }
-    public void request(int id, int seq) throws RemoteException{
+    public int request(int id, int seq) throws RemoteException {
         for (Proceso proceso : procesos) {
-
-            //Hacer que RN[J]  = MAX(RN[J], seq)
             int indice = proceso.getId();
-            proceso.modificarValorRN(indice, Math.max(proceso.obtenerValorRN(indice),seq));
 
-            //Si el proceso tiene el token ocioso, se lo envia al otro proceso si RN[I] = LN[I]+1
-            if(proceso.getEstado() == 2)
-            {
+            if (id != indice) {
+                //Hacer que RN[J]  = MAX(RN[J], seq)
+                proceso.modificarValorRN(indice, Math.max(proceso.obtenerValorRN(indice), seq));
 
-                if(proceso.obtenerValorRN(indice) == proceso.getToken().obtenervalorln(indice) + 1)
-                {
-                    //Pasarle el token
-                    System.out.println("PASAR TOKEN A PROCESO" + indice);
-                }
-                else
-                {
-                    //Wait
-                    System.out.println("HACER ESPERAR A PROCESO" + indice);
+                //Si el proceso tiene el token ocioso, se lo envia al otro proceso si RN[I] = LN[I]+1
+                if (proceso.getEstado() == 2) {
 
+                    if (proceso.obtenerValorRN(indice) == proceso.getToken().obtenervalorln(indice) + 1) {
+                        //Pasarle el token
+                        System.out.println("PASAR TOKEN A PROCESO " + id);
+                        return 200;
+                    } else {
+                        //Wait
+                        System.out.println("HACER ESPERAR A PROCESO " + id);
+                        return 300;
+
+                    }
                 }
             }
-        }
 
+        }
+        return 0;
     }
     public void waitToken() throws RemoteException{
+        System.out.println("Wait");
 
     }
-    public void takeToken(Token token) throws RemoteException{
+    public Token takeToken(Token token) throws RemoteException{
+        System.out.println("Take Token");
+        for (Proceso proceso : procesos) {
+            if(proceso.getToken() != null)
+            {
+                  Token temp = proceso.getToken();
+                  proceso.modificarToken(token);
+                  return temp;
+            }
+
+
+        }
+        return token;
 
     }
     public void kill() throws RemoteException{
+        System.out.println("KILL");
+        for (Proceso proceso : procesos) {
+            proceso.cambiarEstado(5);
+        }
+        procesos.clear();
 
     }
 }
